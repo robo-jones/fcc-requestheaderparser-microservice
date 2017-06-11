@@ -1,9 +1,9 @@
 const getHeaderData = function(req, res) {
-    const ip = req.ip.split(':');
+    const ips = req.get('X-Forwarded-For').split(',');
     const acceptLanguage = req.get('Accept-Language');
     const userAgent = req.get('User-Agent');
     res.json({
-        ipAddress: ip[ip.length - 1],
+        ipAddress: (ips[0] || req.ip),
         language: acceptLanguage.substring(0, acceptLanguage.indexOf(',')),
         OS: userAgent.substring(userAgent.indexOf('(') + 1, userAgent.indexOf(')'))
     });
